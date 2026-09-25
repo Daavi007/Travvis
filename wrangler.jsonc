@@ -1,8 +1,10 @@
 {
   "name": "travvis",
+  "main": "worker/index.js",
   "compatibility_date": "2026-09-25",
   "assets": {
     "directory": "./out",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
   }
 }
