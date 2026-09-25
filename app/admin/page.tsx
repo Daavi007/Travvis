@@ -25,7 +25,7 @@ export default function AdminPage() {
   const [sizes, setSizes] = useState("P, M, G, GG");
   const [colorName, setColorName] = useState("Preto");
   const [colorHex, setColorHex] = useState("#161616");
-  const [image, setImage] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
@@ -42,13 +42,14 @@ export default function AdminPage() {
     if (!ok) setLoginError("Usuário ou senha incorretos.");
   }
 
-  async function onPhoto(file: File | undefined) {
-    if (!file) return;
+  async function onPhotos(files: FileList | null) {
+    if (!files || files.length === 0) return;
     setError("");
     try {
-      setImage(await compressImage(file));
+      const extras = await Promise.all(Array.from(files).map((file) => compressImage(file)));
+      setImages((current) => [...current, ...extras].slice(0, 6));
     } catch {
-      setError("Não consegui ler essa foto.");
+      setError("Não consegui ler uma das fotos.");
     }
   }
 
@@ -70,7 +71,7 @@ export default function AdminPage() {
         sizes: sizes.split(",").map((item) => item.trim()).filter(Boolean),
         colors: [{ name: colorName, hex: colorHex }],
         details: description ? [description] : [],
-        image,
+        images,
       }),
     });
     const data = (await response.json()) as { error?: string };
@@ -94,7 +95,7 @@ export default function AdminPage() {
     setSizes(product.sizes.join(", "));
     setColorName(product.colors[0]?.name ?? "Preto");
     setColorHex(product.colors[0]?.hex ?? "#161616");
-    setImage(product.image ?? "");
+    setImages(product.images?.length ? product.images : product.image ? [product.image] : []);
     setSaved(false);
     setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -109,7 +110,7 @@ export default function AdminPage() {
     setSizes("P, M, G, GG");
     setColorName("Preto");
     setColorHex("#161616");
-    setImage("");
+    setImages([]);
   }
 
   async function onDelete(product: Product) {
@@ -204,10 +205,25 @@ export default function AdminPage() {
           </label>
         </div>
         <label className="text-sm">
-          Foto
-          <input className={inputClass} type="file" accept="image/*" onChange={(event) => void onPhoto(event.target.files?.[0])} />
+          Fotos
+          <input className={inputClass} type="file" accept="image/*" multiple onChange={(event) => void onPhotos(event.target.files)} />
         </label>
-        {image ? <img src={image} alt="" className="h-40 w-32 object-cover" /> : null}
+        {images.length > 0 ? (
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+            {images.map((item, index) => (
+              <div key={`${item.slice(0, 24)}-${index}`} className="relative">
+                <img src={item} alt="" className="h-28 w-full object-cover" />
+                <button
+                  type="button"
+                  className="absolute right-1 top-1 bg-ink px-2 py-1 text-[10px] text-cream"
+                  onClick={() => setImages((current) => current.filter((_, i) => i !== index))}
+                >
+                  Tirar
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : null}
         {error ? <p className="text-sm text-brand">{error}</p> : null}
         {saved ? <p className="text-sm text-muted">Produto salvo. Ele já está na vitrine.</p> : null}
         <div className="flex flex-wrap gap-3">

@@ -21,8 +21,14 @@ export type Product = {
   ink: string;
   art: "tee" | "hoodie" | "pants" | "watch" | "cap";
   image?: string;
+  images?: string[];
   stock?: number;
 };
+
+export function productImages(product: Product) {
+  if (product.images && product.images.length > 0) return product.images;
+  return product.image ? [product.image] : [];
+}
 
 export const categories: { id: CategoryId; label: string; text: string }[] = [
   {

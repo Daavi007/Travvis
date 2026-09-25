@@ -1,4 +1,4 @@
-import type { Product } from "@/lib/products";
+import { productImages, type Product } from "@/lib/products";
 
 function Tee() {
   return (
@@ -38,11 +38,12 @@ function Cap() {
 
 const arts = { tee: Tee, hoodie: Hoodie, pants: Pants, watch: Watch, cap: Cap };
 
-export function ProductArt({ product, className = "" }: { product: Product; className?: string }) {
-  if (product.image) {
+export function ProductArt({ product, className = "", src }: { product: Product; className?: string; src?: string }) {
+  const photo = src || productImages(product)[0];
+  if (photo) {
     return (
       <div className={`relative overflow-hidden bg-cream ${className}`}>
-        <img src={product.image} alt="" className="h-full w-full object-cover" />
+        <img src={photo} alt="" className="h-full w-full object-cover" />
         <span className="absolute left-3 top-3 bg-ink/80 px-2 py-1 text-[10px] tracking-[0.22em] text-cream">{product.sku}</span>
       </div>
     );

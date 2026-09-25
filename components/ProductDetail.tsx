@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import type { Product } from "@/lib/products";
+import { productImages, type Product } from "@/lib/products";
 import { formatBRL } from "@/lib/format";
 import { useCart } from "./CartProvider";
 import { ProductArt } from "./ProductArt";
 
 export function ProductDetail({ product }: { product: Product }) {
   const { add } = useCart();
+  const photos = productImages(product);
+  const [photo, setPhoto] = useState(photos[0] ?? "");
   const [size, setSize] = useState(product.sizes.length === 1 ? product.sizes[0] : "");
   const [color, setColor] = useState(product.colors[0]?.name ?? "");
   const available = typeof product.stock === "number" ? product.stock : 10;
@@ -36,7 +38,23 @@ export function ProductDetail({ product }: { product: Product }) {
 
   return (
     <div className="grid gap-10 lg:grid-cols-2">
-      <ProductArt product={product} className="aspect-[4/5]" />
+      <div>
+        <ProductArt product={product} src={photo || undefined} className="aspect-[4/5]" />
+        {photos.length > 1 ? (
+          <div className="mt-3 grid grid-cols-4 gap-2">
+            {photos.map((item) => (
+              <button
+                key={item.slice(0, 40)}
+                type="button"
+                onClick={() => setPhoto(item)}
+                className={`overflow-hidden border ${photo === item ? "border-ink" : "border-line"}`}
+              >
+                <img src={item} alt="" className="aspect-square w-full object-cover" />
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
       <div>
         <p className="text-[11px] uppercase tracking-[0.18em] text-muted">{product.sku}</p>
         <h1 className="mt-2 font-serif text-5xl leading-none">{product.name}</h1>
