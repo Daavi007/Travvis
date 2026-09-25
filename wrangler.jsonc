@@ -6,11 +6,5 @@
     "directory": "./out",
     "binding": "ASSETS",
     "not_found_handling": "404-page"
-  },
-  "kv_namespaces": [
-    {
-      "binding": "PRODUCTS",
-      "id": "0ce93f6630444e685ce750e0166649a"
-    }
-  ]
+  }
 }
