@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { apiUrl } from "@/lib/api";
-import { categories, type CategoryId, type Product } from "@/lib/products";
+import { categories, sizeOptions, type CategoryId, type Product } from "@/lib/products";
 import { useAdminAuth } from "@/components/AdminAuth";
 import { useCatalog } from "@/components/CatalogProvider";
 import { formatBRL } from "@/lib/format";
@@ -22,7 +22,7 @@ export default function AdminPage() {
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
-  const [sizes, setSizes] = useState("P, M, G, GG");
+  const [sizes, setSizes] = useState<string[]>(["36", "38", "40", "42", "44", "46"]);
   const [colorName, setColorName] = useState("Preto");
   const [colorHex, setColorHex] = useState("#161616");
   const [images, setImages] = useState<string[]>([]);
@@ -68,7 +68,7 @@ export default function AdminPage() {
         price: Number(price.replace(",", ".")),
         stock: Number(stock),
         description,
-        sizes: sizes.split(",").map((item) => item.trim()).filter(Boolean),
+        sizes,
         colors: [{ name: colorName, hex: colorHex }],
         details: description ? [description] : [],
         images,
@@ -92,7 +92,7 @@ export default function AdminPage() {
     setPrice(String(product.price).replace(".", ","));
     setStock(typeof product.stock === "number" ? String(product.stock) : "");
     setDescription(product.description === product.name ? "" : product.description);
-    setSizes(product.sizes.join(", "));
+    setSizes(product.sizes);
     setColorName(product.colors[0]?.name ?? "Preto");
     setColorHex(product.colors[0]?.hex ?? "#161616");
     setImages(product.images?.length ? product.images : product.image ? [product.image] : []);
@@ -107,7 +107,7 @@ export default function AdminPage() {
     setPrice("");
     setStock("");
     setDescription("");
-    setSizes("P, M, G, GG");
+    setSizes(sizeOptions("short"));
     setColorName("Preto");
     setColorHex("#161616");
     setImages([]);
@@ -166,7 +166,15 @@ export default function AdminPage() {
       <form onSubmit={onSave} className="mt-8 grid gap-4 border border-line bg-cream p-5">
         <label className="text-sm">
           Categoria
-          <select className={inputClass} value={category} onChange={(event) => setCategory(event.target.value as CategoryId)}>
+          <select
+            className={inputClass}
+            value={category}
+            onChange={(event) => {
+              const next = event.target.value as CategoryId;
+              setCategory(next);
+              if (!editing) setSizes(sizeOptions(next));
+            }}
+          >
             {publicCategories.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.label}
@@ -190,10 +198,30 @@ export default function AdminPage() {
           Descrição
           <textarea className={inputClass} rows={3} value={description} onChange={(event) => setDescription(event.target.value)} />
         </label>
-        <label className="text-sm">
-          Tamanhos, separados por vírgula
-          <input className={inputClass} value={sizes} onChange={(event) => setSizes(event.target.value)} />
-        </label>
+        <fieldset>
+          <legend className="text-sm">Tamanhos disponíveis</legend>
+          <p className="mt-1 text-xs text-muted">O que não marcar aparece com X e o cliente não escolhe.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {sizeOptions(category === "bermudas" ? "short" : category).map((item) => {
+              const on = sizes.includes(item);
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setSizes((current) => (on ? current.filter((size) => size !== item) : [...current, item]))}
+                  className={`relative min-w-12 border px-3 py-2 text-sm ${on ? "border-ink bg-ink text-cream" : "border-line text-muted"}`}
+                >
+                  {item}
+                  {!on ? (
+                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center text-lg leading-none text-brand" aria-hidden="true">
+                      ×
+                    </span>
+                  ) : null}
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
         <div className="grid gap-4 sm:grid-cols-[1fr_8rem]">
           <label className="text-sm">
             Cor

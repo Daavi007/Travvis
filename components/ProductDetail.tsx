@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { productImages, type Product } from "@/lib/products";
+import { displaySizes, productImages, type Product } from "@/lib/products";
 import { useCart } from "./CartProvider";
 import { ProductArt } from "./ProductArt";
 import { ProductPrice } from "./ProductPrice";
@@ -9,6 +9,7 @@ import { ProductPrice } from "./ProductPrice";
 export function ProductDetail({ product }: { product: Product }) {
   const { add } = useCart();
   const photos = productImages(product);
+  const sizes = displaySizes(product);
   const [photo, setPhoto] = useState(photos[0] ?? "");
   const [size, setSize] = useState(product.sizes.length === 1 ? product.sizes[0] : "");
   const [color, setColor] = useState(product.colors[0]?.name ?? "");
@@ -84,20 +85,37 @@ export function ProductDetail({ product }: { product: Product }) {
           <fieldset className="mt-6">
             <legend className="text-sm">Tamanho</legend>
             <div className="mt-3 flex flex-wrap gap-2">
-              {product.sizes.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  aria-pressed={size === item}
-                  onClick={() => {
-                    setSize(item);
-                    setError("");
-                  }}
-                  className={`min-w-12 border px-3 py-2 text-sm ${size === item ? "border-ink bg-ink text-cream" : "border-line"}`}
-                >
-                  {item}
-                </button>
-              ))}
+              {sizes.map((item) => {
+                const inStock = product.sizes.includes(item);
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    disabled={!inStock}
+                    aria-pressed={size === item}
+                    aria-label={inStock ? item : `${item} indisponível`}
+                    onClick={() => {
+                      if (!inStock) return;
+                      setSize(item);
+                      setError("");
+                    }}
+                    className={`relative min-w-12 border px-3 py-2 text-sm ${
+                      !inStock
+                        ? "cursor-not-allowed border-line text-muted"
+                        : size === item
+                          ? "border-ink bg-ink text-cream"
+                          : "border-line"
+                    }`}
+                  >
+                    {item}
+                    {!inStock ? (
+                      <span className="pointer-events-none absolute inset-0 flex items-center justify-center text-lg leading-none text-brand" aria-hidden="true">
+                        ×
+                      </span>
+                    ) : null}
+                  </button>
+                );
+              })}
             </div>
           </fieldset>
         ) : null}

@@ -233,3 +233,22 @@ export function sameCategory(productCategory: string, categoryId: string) {
   if (productCategory === categoryId) return true;
   return categoryId === "short" && productCategory === "bermudas";
 }
+
+export const letterSizes = ["PP", "P", "M", "G", "GG"];
+export const numberSizes = ["36", "38", "40", "42", "44", "46"];
+
+export function sizeOptions(category: CategoryId) {
+  if (category === "relogios") return [];
+  if (category === "bones") return ["Único"];
+  if (category === "short" || category === "bermudas" || category === "calcados") return numberSizes;
+  return letterSizes;
+}
+
+export function displaySizes(product: Product) {
+  if (product.sizes.length === 0) return [];
+  if (product.sizes.length === 1 && /único|unico/i.test(product.sizes[0])) return product.sizes;
+  const numeric = product.sizes.every((item) => /^\d+$/.test(item));
+  const chart = numeric ? numberSizes : letterSizes;
+  const extra = product.sizes.filter((item) => !chart.includes(item));
+  return [...chart, ...extra];
+}
