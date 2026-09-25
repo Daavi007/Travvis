@@ -18,7 +18,7 @@ export default function AdminPage() {
   const [loginError, setLoginError] = useState("");
   const [entering, setEntering] = useState(false);
   const [name, setName] = useState("");
-  const [category, setCategory] = useState<CategoryId>("bermudas");
+  const [category, setCategory] = useState<CategoryId>("short");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");

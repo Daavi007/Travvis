@@ -1,6 +1,8 @@
 export type CategoryId =
   | "camisas-oversized"
   | "camisa-long"
+  | "camisas-polo"
+  | "short"
   | "bermudas"
   | "calcados"
   | "relogios"
@@ -42,9 +44,14 @@ export const categories: { id: CategoryId; label: string; text: string }[] = [
     text: "Camisas longas para o dia a dia.",
   },
   {
-    id: "bermudas",
-    label: "Bermudas",
-    text: "Bermudas leves para o calor.",
+    id: "camisas-polo",
+    label: "Camisas Polo",
+    text: "Polos para o dia a dia.",
+  },
+  {
+    id: "short",
+    label: "Short",
+    text: "Shorts leves para o calor.",
   },
   {
     id: "calcados",
@@ -218,5 +225,11 @@ export function getRelated(slug: string) {
 
 export function categoryLabel(id: string) {
   if (id === "roupas") return "Roupas";
+  if (id === "bermudas") return "Short";
   return categories.find((category) => category.id === id)?.label ?? "A vitrine";
+}
+
+export function sameCategory(productCategory: string, categoryId: string) {
+  if (productCategory === categoryId) return true;
+  return categoryId === "short" && productCategory === "bermudas";
 }

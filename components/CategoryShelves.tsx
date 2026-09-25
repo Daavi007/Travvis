@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { categories } from "@/lib/products";
+import { categories, sameCategory } from "@/lib/products";
 import { ProductCard } from "./ProductCard";
 import { useCatalog } from "./CatalogProvider";
 
@@ -12,7 +12,7 @@ export function CategoryShelves() {
   return (
     <div className="mx-auto max-w-6xl space-y-16 px-5">
       {shelves.map((category) => {
-        const items = products.filter((product) => product.category === category.id).slice(0, 3);
+        const items = products.filter((product) => sameCategory(product.category, category.id)).slice(0, 3);
         return (
           <section key={category.id}>
             <div className="flex items-end justify-between gap-4">

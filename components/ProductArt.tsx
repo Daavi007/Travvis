@@ -44,7 +44,6 @@ export function ProductArt({ product, className = "", src }: { product: Product;
     return (
       <div className={`relative overflow-hidden bg-cream ${className}`}>
         <img src={photo} alt="" className="h-full w-full object-cover" />
-        <span className="absolute left-3 top-3 bg-ink/80 px-2 py-1 text-[10px] tracking-[0.22em] text-cream">{product.sku}</span>
       </div>
     );
   }
@@ -55,7 +54,6 @@ export function ProductArt({ product, className = "", src }: { product: Product;
         <ellipse cx="200" cy="438" rx="96" ry="12" opacity="0.15" />
         <Art />
       </svg>
-      <span className="absolute left-3 top-3 text-[10px] tracking-[0.22em]">{product.sku}</span>
     </div>
   );
 }

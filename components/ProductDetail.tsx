@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { productImages, type Product } from "@/lib/products";
-import { formatBRL } from "@/lib/format";
 import { useCart } from "./CartProvider";
 import { ProductArt } from "./ProductArt";
+import { ProductPrice } from "./ProductPrice";
 
 export function ProductDetail({ product }: { product: Product }) {
   const { add } = useCart();
@@ -56,9 +56,8 @@ export function ProductDetail({ product }: { product: Product }) {
         ) : null}
       </div>
       <div>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-muted">{product.sku}</p>
-        <h1 className="mt-2 font-serif text-5xl leading-none">{product.name}</h1>
-        <p className="mt-4 text-xl">{formatBRL(product.price)}</p>
+        <h1 className="font-serif text-5xl leading-none">{product.name}</h1>
+        <ProductPrice price={product.price} size="detail" />
         {typeof product.stock === "number" ? (
           <p className="mt-2 text-sm text-muted">{product.stock === 0 ? "Esgotado" : `${product.stock} disponíveis`}</p>
         ) : null}

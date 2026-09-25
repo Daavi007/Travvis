@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { useCatalog } from "@/components/CatalogProvider";
-import { categories, categoryLabel, type CategoryId } from "@/lib/products";
+import { categories, categoryLabel, sameCategory, type CategoryId } from "@/lib/products";
 
 function ProductsPage() {
   const { products } = useCatalog();
@@ -14,7 +14,7 @@ function ProductsPage() {
   const selected = categories.some((category) => category.id === categoria)
     ? (categoria as CategoryId)
     : null;
-  const list = selected ? products.filter((product) => product.category === selected) : products;
+  const list = selected ? products.filter((product) => sameCategory(product.category, selected)) : products;
   const current = categories.find((category) => category.id === selected);
 
   return (

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { formatBRL } from "@/lib/format";
 import { categoryLabel, products as staticProducts, type Product } from "@/lib/products";
 import { ProductArt } from "./ProductArt";
+import { ProductPrice } from "./ProductPrice";
 
 export function productHref(product: Product) {
   const builtIn = staticProducts.some((item) => item.slug === product.slug);
@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-muted">{categoryLabel(product.category)}</p>
       <h2 className="mt-1 text-lg leading-tight">{product.name}</h2>
-      <p className="mt-1 text-sm">{formatBRL(product.price)}</p>
+      <ProductPrice price={product.price} />
     </Link>
   );
 }
