@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { ProductCard } from "@/components/ProductCard";
-import { categories, products } from "@/lib/products";
+import { CategoryShelves } from "@/components/CategoryShelves";
+import { products } from "@/lib/products";
 import { ProductArt } from "@/components/ProductArt";
 
 export default function HomePage() {
@@ -20,8 +20,8 @@ export default function HomePage() {
             <Link href="/produtos" className="bg-ink px-5 py-3 text-cream">
               Ver a vitrine
             </Link>
-            <Link href="/produtos?categoria=roupas" className="border border-ink px-5 py-3">
-              Começar pelas roupas
+            <Link href="/produtos?categoria=camisas-oversized" className="border border-ink px-5 py-3">
+              Camisas oversized
             </Link>
           </div>
         </div>
@@ -30,28 +30,7 @@ export default function HomePage() {
         </Link>
       </section>
 
-      <section className="mx-auto grid max-w-6xl gap-4 px-5 md:grid-cols-3">
-        {categories.map((category) => (
-          <Link key={category.id} href={`/produtos?categoria=${category.id}`} className="border border-line bg-cream p-6 hover:border-ink">
-            <h2 className="font-serif text-4xl">{category.label}</h2>
-            <p className="mt-3 text-sm text-muted">{category.text}</p>
-          </Link>
-        ))}
-      </section>
-
-      <section className="mx-auto max-w-6xl px-5 py-20">
-        <div className="flex items-end justify-between gap-4">
-          <h2 className="font-serif text-4xl">Peças da casa</h2>
-          <Link href="/produtos" className="text-sm underline">
-            Ver tudo
-          </Link>
-        </div>
-        <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {products.slice(0, 6).map((product) => (
-            <ProductCard key={product.slug} product={product} />
-          ))}
-        </div>
-      </section>
+      <CategoryShelves />
 
       <section className="border-y border-line">
         <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 md:grid-cols-3">

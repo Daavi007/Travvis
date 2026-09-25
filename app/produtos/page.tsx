@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { ProductCard } from "@/components/ProductCard";
-import { categories, categoryLabel, products, type CategoryId } from "@/lib/products";
+import { useCatalog } from "@/components/CatalogProvider";
+import { categories, categoryLabel, type CategoryId } from "@/lib/products";
 
 function ProductsPage() {
+  const { products } = useCatalog();
   const searchParams = useSearchParams();
   const categoria = searchParams.get("categoria") ?? undefined;
   const selected = categories.some((category) => category.id === categoria)

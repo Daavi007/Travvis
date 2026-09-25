@@ -2,17 +2,15 @@
 
 import Link from "next/link";
 import { storeConfig } from "@/lib/config";
+import { categories } from "@/lib/products";
 import { whatsappHref } from "@/lib/whatsapp";
+import { useAdminAuth } from "./AdminAuth";
 import { useCart } from "./CartProvider";
-
-const links = [
-  { href: "/produtos?categoria=roupas", label: "Roupas" },
-  { href: "/produtos?categoria=relogios", label: "Relógios" },
-  { href: "/produtos?categoria=bones", label: "Bonés" },
-];
 
 export function Header() {
   const { count } = useCart();
+  const { session, ready, logout } = useAdminAuth();
+  const loggedIn = ready && Boolean(session);
   const chat = storeConfig.whatsapp ? whatsappHref("Olá! Vim pelo site da Travvis Multimarcas.") : "";
 
   return (
@@ -22,20 +20,34 @@ export function Header() {
         <Link href="/" className="justify-self-center">
           <img src="/logo.png" alt="Travvis Multimarcas" className="h-14 w-auto sm:h-[4.5rem]" />
         </Link>
-        <Link href="/carrinho" className="justify-self-end text-sm" aria-label={`Carrinho com ${count} itens`}>
-          <span className="inline-flex items-center gap-2">
-            <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-              <path d="M6 7h12l-1 12H7L6 7Z" />
-              <path d="M9 7a3 3 0 0 1 6 0" />
-            </svg>
-            <span>{count}</span>
-          </span>
-        </Link>
+        <div className="flex items-center justify-end gap-4 justify-self-end text-sm">
+          <Link key="cadastrar" href="/admin" className="text-[11px] uppercase tracking-[0.14em] text-cream/80 hover:text-cream">
+            Cadastrar
+          </Link>
+          {loggedIn ? (
+            <button key="sair" type="button" onClick={logout} className="text-[11px] uppercase tracking-[0.14em] text-cream/80 hover:text-cream">
+              Sair
+            </button>
+          ) : (
+            <Link key="entrar" href="/admin" className="text-[11px] uppercase tracking-[0.14em] text-cream/80 hover:text-cream">
+              Entrar
+            </Link>
+          )}
+          <Link href="/carrinho" aria-label={`Carrinho com ${count} itens`}>
+            <span className="inline-flex items-center gap-2">
+              <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                <path d="M6 7h12l-1 12H7L6 7Z" />
+                <path d="M9 7a3 3 0 0 1 6 0" />
+              </svg>
+              <span>{count}</span>
+            </span>
+          </Link>
+        </div>
       </div>
       <nav className="flex items-center justify-center gap-6 overflow-x-auto border-t border-white/10 px-4 py-3 text-[11px] uppercase tracking-[0.16em] text-cream/80 sm:gap-8 sm:text-xs">
-        {links.map((link) => (
-          <Link key={link.href} href={link.href} className="shrink-0 hover:text-cream">
-            {link.label}
+        {categories.map((category) => (
+          <Link key={category.id} href={`/produtos?categoria=${category.id}`} className="shrink-0 hover:text-cream">
+            {category.label}
           </Link>
         ))}
       </nav>

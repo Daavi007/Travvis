@@ -24,7 +24,8 @@ export function priceItems(raw: unknown): PricedLine[] {
     if (!entry || typeof entry !== "object") continue;
     const product = getProduct(String(entry.slug || ""));
     const qty = Number(entry.qty);
-    if (!product || !Number.isInteger(qty) || qty < 1 || qty > 10) continue;
+    if (!product || !Number.isInteger(qty) || qty < 1 || qty > 9999) continue;
+    if (typeof product.stock === "number" && qty > product.stock) continue;
 
     const size = String(entry.size || "");
     const color = String(entry.color || "");

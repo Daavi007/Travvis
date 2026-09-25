@@ -50,7 +50,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           const existing = current.find((entry) => cartKey(entry) === key);
           if (!existing) return [...current, item];
           return current.map((entry) =>
-            cartKey(entry) === key ? { ...entry, qty: Math.min(10, entry.qty + item.qty) } : entry,
+            cartKey(entry) === key ? { ...entry, qty: Math.min(9999, entry.qty + item.qty) } : entry,
           );
         });
       },
@@ -59,7 +59,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           current.flatMap((entry) => {
             if (cartKey(entry) !== key) return [entry];
             if (qty < 1) return [];
-            return [{ ...entry, qty: Math.min(10, qty) }];
+            return [{ ...entry, qty: Math.min(9999, qty) }];
           }),
         );
       },

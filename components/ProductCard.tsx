@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { formatBRL } from "@/lib/format";
-import { categoryLabel, type Product } from "@/lib/products";
+import { categoryLabel, products as staticProducts, type Product } from "@/lib/products";
 import { ProductArt } from "./ProductArt";
+
+export function productHref(product: Product) {
+  const builtIn = staticProducts.some((item) => item.slug === product.slug);
+  return builtIn ? `/produto/${product.slug}` : `/produto/ver?slug=${encodeURIComponent(product.slug)}`;
+}
 
 export function ProductCard({ product }: { product: Product }) {
   return (
-    <Link href={`/produto/${product.slug}`} className="group block">
+    <Link href={productHref(product)} className="group block">
       <div className="overflow-hidden">
         <ProductArt product={product} className="aspect-[4/5] transition duration-500 group-hover:scale-[1.03]" />
       </div>

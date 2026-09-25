@@ -18,6 +18,6 @@ export function isCartItem(value: unknown): value is CartItem {
     typeof item.color === "string" &&
     Number.isInteger(item.qty) &&
     item.qty >= 1 &&
-    item.qty <= 10
+    item.qty <= 9999
   );
 }

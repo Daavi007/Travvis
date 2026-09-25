@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { formatBRL } from "@/lib/format";
-import { getProduct } from "@/lib/products";
 import { cartKey } from "@/lib/types";
 import { useCart } from "./CartProvider";
+import { useCatalog } from "./CatalogProvider";
 import { ProductArt } from "./ProductArt";
 
 export function CartView() {
   const { items, ready, setQty, remove } = useCart();
+  const { getProduct, ready: catalogReady } = useCatalog();
   const lines = items.flatMap((item) => {
     const product = getProduct(item.slug);
     if (!product) return [];
@@ -16,7 +17,7 @@ export function CartView() {
   });
   const total = lines.reduce((sum, line) => sum + line.lineTotal, 0);
 
-  if (!ready) return <div className="mx-auto max-w-6xl px-5 py-16 text-muted">Carregando carrinho...</div>;
+  if (!ready || !catalogReady) return <div className="mx-auto max-w-6xl px-5 py-16 text-muted">Carregando carrinho...</div>;
 
   if (lines.length === 0) {
     return (
@@ -48,7 +49,13 @@ export function CartView() {
                     −
                   </button>
                   <span className="w-6 text-center text-sm">{item.qty}</span>
-                  <button type="button" className="h-8 w-8 border border-line" onClick={() => setQty(key, item.qty + 1)} aria-label="Aumentar">
+                  <button
+                    type="button"
+                    className="h-8 w-8 border border-line"
+                    onClick={() => setQty(key, item.qty + 1)}
+                    disabled={typeof product.stock === "number" && item.qty >= product.stock}
+                    aria-label="Aumentar"
+                  >
                     +
                   </button>
                   <button type="button" className="ml-3 text-sm text-muted underline" onClick={() => remove(key)}>

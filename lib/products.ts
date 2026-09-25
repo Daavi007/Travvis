@@ -1,4 +1,11 @@
-export type CategoryId = "roupas" | "relogios" | "bones";
+export type CategoryId =
+  | "camisas-oversized"
+  | "camisa-long"
+  | "bermudas"
+  | "calcados"
+  | "relogios"
+  | "bones"
+  | "roupas";
 
 export type Product = {
   slug: string;
@@ -13,13 +20,30 @@ export type Product = {
   accent: string;
   ink: string;
   art: "tee" | "hoodie" | "pants" | "watch" | "cap";
+  image?: string;
+  stock?: number;
 };
 
 export const categories: { id: CategoryId; label: string; text: string }[] = [
   {
-    id: "roupas",
-    label: "Roupas",
-    text: "Camisetas, moletons e calças com caimento atual.",
+    id: "camisas-oversized",
+    label: "Camisas Oversized",
+    text: "Camisetas oversized com caimento solto.",
+  },
+  {
+    id: "camisa-long",
+    label: "Camisas Long",
+    text: "Camisas longas para o dia a dia.",
+  },
+  {
+    id: "bermudas",
+    label: "Bermudas",
+    text: "Bermudas leves para o calor.",
+  },
+  {
+    id: "calcados",
+    label: "Calçados",
+    text: "Calçados para fechar o visual.",
   },
   {
     id: "relogios",
@@ -38,7 +62,7 @@ export const products: Product[] = [
     slug: "camiseta-oversized-noir",
     sku: "TV-01",
     name: "Camiseta Oversized Noir",
-    category: "roupas",
+    category: "camisas-oversized",
     price: 139,
     description: "Malha de algodão pesada, ombro caído e gola que segura o formato depois de lavar.",
     details: ["100% algodão", "Caimento oversized", "Gola reforçada"],
@@ -187,5 +211,6 @@ export function getRelated(slug: string) {
 }
 
 export function categoryLabel(id: string) {
+  if (id === "roupas") return "Roupas";
   return categories.find((category) => category.id === id)?.label ?? "A vitrine";
 }

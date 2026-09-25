@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Outfit } from "next/font/google";
+import { AdminAuthProvider } from "@/components/AdminAuth";
 import { CartProvider } from "@/components/CartProvider";
+import { CatalogProvider } from "@/components/CatalogProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SetupBanner } from "@/components/SetupBanner";
@@ -22,12 +24,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body className={`${sans.variable} ${serif.variable} flex min-h-screen flex-col font-sans`}>
-        <CartProvider>
-          <SetupBanner />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CartProvider>
+        <CatalogProvider>
+          <AdminAuthProvider>
+          <CartProvider>
+            <SetupBanner />
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </CartProvider>
+          </AdminAuthProvider>
+        </CatalogProvider>
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { storeConfig } from "@/lib/config";
 import { formatBRL } from "@/lib/format";
 import { buildOrderMessage } from "@/lib/order";
-import { getProduct } from "@/lib/products";
+import { useCatalog } from "./CatalogProvider";
 import { whatsappHref } from "@/lib/whatsapp";
 import { useCart } from "./CartProvider";
 
@@ -14,6 +14,7 @@ const inputClass = "mt-2 w-full border border-line bg-cream px-3 py-3 outline-no
 
 export function CheckoutForm() {
   const { items, ready, clear } = useCart();
+  const { getProduct, products } = useCatalog();
   const orderId = useRef(`TV-${Date.now().toString(36).toUpperCase()}`);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -36,7 +37,7 @@ export function CheckoutForm() {
         if (!product) return [];
         return [{ item, product, lineTotal: product.price * item.qty }];
       }),
-    [items],
+    [items, products],
   );
   const total = lines.reduce((sum, line) => sum + line.lineTotal, 0);
 
