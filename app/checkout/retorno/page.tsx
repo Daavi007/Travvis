@@ -1,8 +1,18 @@
-import type { Metadata } from "next";
+"use client";
+
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { ReturnView } from "@/components/ReturnView";
 
-export const metadata: Metadata = { title: "Pagamento" };
+function ReturnPage() {
+  const status = useSearchParams().get("status") || "";
+  return <ReturnView status={status} />;
+}
 
-export default function ReturnPage({ searchParams }: { searchParams: { status?: string } }) {
-  return <ReturnView status={searchParams.status || ""} />;
+export default function Page() {
+  return (
+    <Suspense>
+      <ReturnPage />
+    </Suspense>
+  );
 }

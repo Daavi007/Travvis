@@ -21,25 +21,23 @@ export function buildOrderMessage(input: {
   paymentLabel: string;
 }) {
   const items = input.lines.map((line) => {
-    const variant = [line.color, line.size].filter(Boolean).join(", ");
-    const label = variant ? `${line.name} (${variant})` : line.name;
-    return `• ${line.qty}× ${label} — ${formatBRL(line.lineTotal)}`;
+    const size = line.size ? `*${line.size}*` : "";
+    const variant = [line.color, size].filter(Boolean).join(" | ");
+    const label = variant ? `# ${line.name} | ${variant}` : `# ${line.name}`;
+    return `${label}\nQuantidade: ${line.qty} / Valor: ${formatBRL(line.lineTotal)}`;
   });
 
   return [
-    "Olá! Quero fazer um pedido na Travvis Multimarcas.",
-    `Código: ${input.orderId}`,
-    "",
-    `Nome: ${input.name}`,
-    `WhatsApp: ${input.phone}`,
+    `Pedido #${input.orderId}`,
+    "-----------------------",
+    `Cliente: Nome: ${input.name}`,
+    `Celular: ${input.phone}`,
     input.email ? `E-mail: ${input.email}` : "",
     `Entrega: ${input.address}, ${input.city}`,
-    "",
-    "Itens:",
+    "Produtos:",
     ...items,
-    "",
-    `Total dos produtos: ${formatBRL(input.total)}`,
-    "Frete: a combinar na confirmação",
+    `Subtotal: ${formatBRL(input.total)}`,
+    "Frete: a combinar",
     `Pagamento: ${input.paymentLabel}`,
     input.note ? `Obs.: ${input.note}` : "",
   ]

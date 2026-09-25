@@ -121,7 +121,7 @@ export function CheckoutForm() {
       }
       setPix({ payload: data.payload, qrDataUrl: data.qrDataUrl, total: data.total });
     } catch {
-      setFormError("Não foi possível gerar o Pix. Tente de novo ou envie o pedido no WhatsApp.");
+      openWhatsapp("Pix — pedir a chave para a loja");
     } finally {
       setLoading(null);
     }

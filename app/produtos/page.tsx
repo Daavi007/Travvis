@@ -1,13 +1,16 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { categories, categoryLabel, products, type CategoryId } from "@/lib/products";
 
-export const metadata: Metadata = { title: "Vitrine" };
-
-export default function ProductsPage({ searchParams }: { searchParams: { categoria?: string } }) {
-  const selected = categories.some((category) => category.id === searchParams.categoria)
-    ? (searchParams.categoria as CategoryId)
+function ProductsPage() {
+  const searchParams = useSearchParams();
+  const categoria = searchParams.get("categoria") ?? undefined;
+  const selected = categories.some((category) => category.id === categoria)
+    ? (categoria as CategoryId)
     : null;
   const list = selected ? products.filter((product) => product.category === selected) : products;
   const current = categories.find((category) => category.id === selected);
@@ -37,5 +40,13 @@ export default function ProductsPage({ searchParams }: { searchParams: { categor
         ))}
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <ProductsPage />
+    </Suspense>
   );
 }
