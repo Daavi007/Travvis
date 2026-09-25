@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: #efece6;
+  color: #161616;
+}
+
+::selection {
+  background: #161616;
+  color: #f7f5f1;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid #161616;
+  outline-offset: 3px;
+}
