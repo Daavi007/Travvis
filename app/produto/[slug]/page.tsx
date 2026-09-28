@@ -5,6 +5,7 @@ import { ProductDetail } from "@/components/ProductDetail";
 import { getProduct, getRelated, products } from "@/lib/products";
 
 export function generateStaticParams() {
+  if (products.length === 0) return [{ slug: "_" }];
   return products.map((product) => ({ slug: product.slug }));
 }
 

@@ -31,7 +31,7 @@ export default function AdminPage() {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const registered = products.filter((product) => !isBuiltIn(product));
+  const registered = products;
 
   async function onLogin(event: React.FormEvent) {
     event.preventDefault();
@@ -290,10 +290,6 @@ export default function AdminPage() {
       </ul>
     </div>
   );
-}
-
-function isBuiltIn(product: Product) {
-  return ["TV-01", "TV-02", "TV-03", "TV-04", "TV-05", "TV-06", "TV-07", "TV-08", "TV-09"].includes(product.sku);
 }
 
 function compressImage(file: File) {
