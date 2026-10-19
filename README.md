@@ -4,6 +4,18 @@
 
 Loja virtual de moda masculina (camisas, shorts, bermudas, calçados, relógios e bonés) com catálogo, carrinho, checkout com **PIX** e **Mercado Pago**, e painel administrativo para o lojista cadastrar produtos sem mexer no código.
 
+## Prévia
+
+<p align="center">
+  <img src="docs/vitrine.png" alt="Vitrine da loja" width="49%">
+  <img src="docs/produto.png" alt="Página de produto com PIX e parcelamento" width="49%">
+</p>
+<p align="center">
+  <img src="docs/mobile.png" alt="Vitrine no celular" width="30%">
+</p>
+
+> Prints com um catálogo fictício de demonstração.
+
 ## Funcionalidades
 
 - **Catálogo** por categoria, com página de produto (tamanhos, cores, estoque e galeria de imagens)
