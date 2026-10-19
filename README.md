@@ -72,7 +72,15 @@ São 21 testes automatizados (Vitest) que cobrem as regras mais sensíveis da lo
 
 Os mesmos testes, a checagem de tipos e o build rodam a cada envio pelo GitHub Actions.
 
-## Deploy
+## Demonstração online
+
+O repositório inclui uma versão **somente leitura** com catálogo fictício, publicada pelo Netlify (`netlify.toml`). Para gerar localmente:
+
+```bash
+npm run build:demo   # site estático em ./out com o catálogo de demo/catalog.json
+```
+
+## Deploy (loja real)
 
 ```bash
 npm run build    # gera o site estático em ./out
