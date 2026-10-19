@@ -1,0 +1,66 @@
+# Travvis Multimarcas
+
+Loja virtual de moda masculina (camisas, shorts, bermudas, calçados, relógios e bonés) com catálogo, carrinho, checkout com **PIX** e **Mercado Pago**, e painel administrativo para o lojista cadastrar produtos sem mexer no código.
+
+## Funcionalidades
+
+- **Catálogo** por categoria, com página de produto (tamanhos, cores, estoque e galeria de imagens)
+- **Carrinho** com persistência no navegador
+- **Checkout** com três formas de fechar o pedido:
+  - **PIX** com QR Code e código "copia e cola" gerados no próprio site
+  - **Cartão** via Mercado Pago
+  - **WhatsApp**, enviando o pedido pronto para o lojista
+- **Painel administrativo** protegido por login: cadastro, edição e remoção de produtos, com tamanhos indisponíveis marcados
+- **API de produtos** em Cloudflare Workers, com o catálogo guardado em Cloudflare KV
+
+## Tecnologias
+
+| Camada | Tecnologias |
+| --- | --- |
+| Front-end | Next.js 14 (export estático), React 18, TypeScript, Tailwind CSS |
+| Back-end | Cloudflare Workers, Cloudflare KV |
+| Pagamentos | Mercado Pago, PIX (QR Code com `qrcode`) |
+| Deploy | Wrangler (Cloudflare) |
+
+## Como rodar localmente
+
+Pré-requisito: Node.js 18 ou superior.
+
+```bash
+npm install
+cp .env.example .env.local   # preencha as variáveis (veja abaixo)
+npm run api                  # API de produtos local em http://127.0.0.1:8788
+npm run dev                  # site em http://localhost:3000
+```
+
+### Variáveis de ambiente
+
+| Variável | Para que serve |
+| --- | --- |
+| `MERCADO_PAGO_ACCESS_TOKEN` | Pagamento com cartão. Sem ela, o cartão segue pelo WhatsApp |
+| `NEXT_PUBLIC_SITE_URL` | Endereço público do site |
+| `ADMIN_USER` / `ADMIN_PASSWORD` | Login do painel administrativo (`/admin`) |
+
+Os dados da loja (nome, WhatsApp e chave PIX) ficam em `lib/config.ts`.
+
+## Deploy
+
+```bash
+npm run build    # gera o site estático em ./out
+npm run deploy   # publica na Cloudflare com o Wrangler
+```
+
+## Estrutura
+
+```
+app/          páginas (home, produtos, produto, carrinho, checkout, admin)
+components/   interface (cards, carrinho, checkout, login do admin)
+lib/          catálogo, formatação, geração do PIX, pedido e WhatsApp
+worker/       Cloudflare Worker (API de produtos + arquivos estáticos)
+server/       rotas de pagamento (PIX e Mercado Pago)
+scripts/      API de produtos para desenvolvimento local
+```
+
+## Autor
+
+Desenvolvido por **David Silva Brito** · [WhatsApp](https://wa.me/5561992792615)
