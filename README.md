@@ -63,4 +63,4 @@ scripts/      API de produtos para desenvolvimento local
 
 ## Autor
 
-Desenvolvido por **David Silva Brito** · [WhatsApp](https://wa.me/5561992792615)
+Desenvolvido por **David Silva Brito**
