@@ -8,8 +8,7 @@
     "build": "next build",
     "start": "next start",
     "deploy": "wrangler deploy",
-    "test": "vitest run",
-    "build:demo": "next build && node scripts/build-demo.mjs"
+    "test": "vitest run"
   },
   "dependencies": {
     "next": "^14.2.15",

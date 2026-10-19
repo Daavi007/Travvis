@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/Daavi007/Travvis/actions/workflows/ci.yml/badge.svg)](https://github.com/Daavi007/Travvis/actions/workflows/ci.yml)
 
+🔗 **Loja no ar: https://travvis.basttox07.workers.dev/**
+
 Loja virtual de moda masculina (camisas, shorts, bermudas, calçados, relógios e bonés) com catálogo, carrinho, checkout com **PIX** e **Mercado Pago**, e painel administrativo para o lojista cadastrar produtos sem mexer no código.
 
 ## Prévia
@@ -14,7 +16,7 @@ Loja virtual de moda masculina (camisas, shorts, bermudas, calçados, relógios 
   <img src="docs/mobile.png" alt="Vitrine no celular" width="30%">
 </p>
 
-> Prints com um catálogo fictício de demonstração.
+> Prints do ambiente de desenvolvimento, com um catálogo fictício.
 
 ## Funcionalidades
 
@@ -72,15 +74,7 @@ São 21 testes automatizados (Vitest) que cobrem as regras mais sensíveis da lo
 
 Os mesmos testes, a checagem de tipos e o build rodam a cada envio pelo GitHub Actions.
 
-## Demonstração online
-
-O repositório inclui uma versão **somente leitura** com catálogo fictício, publicada pelo Netlify (`netlify.toml`). Para gerar localmente:
-
-```bash
-npm run build:demo   # site estático em ./out com o catálogo de demo/catalog.json
-```
-
-## Deploy (loja real)
+## Deploy
 
 ```bash
 npm run build    # gera o site estático em ./out
