@@ -1,5 +1,7 @@
 # Travvis Multimarcas
 
+[![CI](https://github.com/Daavi007/Travvis/actions/workflows/ci.yml/badge.svg)](https://github.com/Daavi007/Travvis/actions/workflows/ci.yml)
+
 Loja virtual de moda masculina (camisas, shorts, bermudas, calçados, relógios e bonés) com catálogo, carrinho, checkout com **PIX** e **Mercado Pago**, e painel administrativo para o lojista cadastrar produtos sem mexer no código.
 
 ## Funcionalidades
@@ -42,6 +44,21 @@ npm run dev                  # site em http://localhost:3000
 | `ADMIN_USER` / `ADMIN_PASSWORD` | Login do painel administrativo (`/admin`) |
 
 Os dados da loja (nome, WhatsApp e chave PIX) ficam em `lib/config.ts`.
+
+## Testes
+
+```bash
+npm test
+```
+
+São 21 testes automatizados (Vitest) que cobrem as regras mais sensíveis da loja:
+
+- **PIX:** o código gerado termina com o CRC16 correto, formata valor e nomes conforme o padrão do Banco Central
+- **Carrinho:** o preço vem sempre do catálogo (nunca do cliente), e itens inválidos, tamanhos inexistentes ou quantidade acima do estoque são descartados
+- **API do painel admin:** alterações exigem login, e criar, editar e remover produtos funcionam só com as credenciais corretas
+- **Preços e mensagem do pedido:** parcelas, desconto no PIX e texto enviado ao WhatsApp
+
+Os mesmos testes, a checagem de tipos e o build rodam a cada envio pelo GitHub Actions.
 
 ## Deploy
 

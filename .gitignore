@@ -5,3 +5,4 @@ out
 .dev.vars
 data
 *.log
+*.tsbuildinfo
